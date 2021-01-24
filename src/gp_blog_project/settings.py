@@ -38,6 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'gp_blog_app',
+    
+    'rest_framework',
+    
+    # swagger
+    # 'django.contrib.staticfiles',  # required for serving swagger ui's css/js files
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -119,3 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / "media_root"
