@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'gp_blog_app',
+    'gp_blog_app.apps.GpBlogAppConfig'
+    'gp_user_app.apps.GpUserAppConfig',
     
     'rest_framework',
     
