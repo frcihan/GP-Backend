@@ -16,7 +16,7 @@ class RegisterView(generics.CreateAPIView):
 
 
 @api_view(["GET", "PUT"])
-def Profile_get_update(request):
+def Profile_get_update(request, id):
     # profile = get_object_or_404(Profile, user__id=id)
     if request.method == "GET":
         serializer = ProfileSerializer(request.user.profile)

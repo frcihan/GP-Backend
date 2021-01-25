@@ -29,15 +29,15 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 class BlogListSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
-    # detail_url = serializers.HyperlinkedIdentityField(
-    #     view_name='detail',
-    #     lookup_field='slug'
-    # )
+    detail_url = serializers.HyperlinkedIdentityField(
+        view_name='gp_blog_app:detail',
+        lookup_field='slug'
+    )
 
     class Meta:
         model = Blog
         fields = (
-            # 'detail_url',
+            'detail_url',
             'title',
             'content',
             'image',
@@ -82,30 +82,30 @@ class BlogDetailSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True)
     # like = LikeSerializer(many=True)
     owner = serializers.SerializerMethodField(read_only=True)
-    # update_url = serializers.HyperlinkedIdentityField(
-    #     view_name='update',
-    #     lookup_field='slug'
-    # )
-    # like_url = serializers.HyperlinkedIdentityField(
-    #     view_name='like',
-    #     lookup_field='slug'
-    # )
-    # delete_url = serializers.HyperlinkedIdentityField(
-    #     view_name='delete',
-    #     lookup_field='slug'
-    # )
-    # comment_url = serializers.HyperlinkedIdentityField(
-    #     view_name='comment',
-    #     lookup_field='slug'
-    # )
+    update_url = serializers.HyperlinkedIdentityField(
+        view_name='gp_blog_app:update',
+        lookup_field='slug'
+    )
+    like_url = serializers.HyperlinkedIdentityField(
+        view_name='gp_blog_app:like',
+        lookup_field='slug'
+    )
+    delete_url = serializers.HyperlinkedIdentityField(
+        view_name='gp_blog_app:delete',
+        lookup_field='slug'
+    )
+    comment_url = serializers.HyperlinkedIdentityField(
+        view_name='gp_blog_app:comment',
+        lookup_field='slug'
+    )
 
     class Meta:
         model = Blog
         fields = (
-            # 'like_url',
-            # 'update_url',
-            # 'delete_url',
-            # 'comment_url',
+            'like_url',
+            'update_url',
+            'delete_url',
+            'comment_url',
             'id',
             'title',
             'content',

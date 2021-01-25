@@ -43,15 +43,19 @@ class Blog(models.Model):
     def __str__(self):
         return self.title
     
+    @property
     def comment_count(self):
         return self.comment_set.all().count()
 
+    @property
     def view_count(self):
         return self.blogview_set.all().count()
 
+    @property
     def like_count(self):
         return self.like_set.all().count()
 
+    @property
     def comments(self):
         return self.comment_set.all()
     
