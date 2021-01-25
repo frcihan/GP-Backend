@@ -1,6 +1,8 @@
+from django.db.models import fields
 from django.http import request
 from rest_framework import serializers
-from .models import Blog
+from .models import Blog, Comment, Like, Category
+from django.db.models import Q
 
 class BlogListSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
@@ -49,3 +51,69 @@ class BlogCreateUpdateSerializer(serializers.ModelSerializer):
             if obj.author == request.user:
                 return True
             return False
+        
+class BlogDetailSerializer(serializers.ModelSerializer):
+    status = serializers.ChoiceField(choices=Blog.OPTIONS)
+    author = serializers.SerializerMethodField()
+    # has_liked = serializers.SerializerMethodField()
+    # comments = CommentSeializer(many=True)
+    # like = LikeSerializer(many=True)
+    owner = serializers.SerializerMethodField(read_only=True)
+    # update_url = serializers.HyperlinkedIdentityField(
+    #     view_name='update',
+    #     lookup_field='slug'
+    # )
+    # like_url = serializers.HyperlinkedIdentityField(
+    #     view_name='like',
+    #     lookup_field='slug'
+    # )
+    # delete_url = serializers.HyperlinkedIdentityField(
+    #     view_name='delete',
+    #     lookup_field='slug'
+    # )
+    # comment_url = serializers.HyperlinkedIdentityField(
+    #     view_name='comment',
+    #     lookup_field='slug'
+    # )
+
+    class Meta:
+        model = Blog
+        fields = (
+            # 'like_url',
+            # 'update_url',
+            # 'delete_url',
+            # 'comment_url',
+            'id',
+            'title',
+            'content',
+            # 'image',
+            'status',
+            'publish_date',
+            'last_updated',
+            'author',
+            'status',
+            'comments',
+            'slug',
+            'comment_count',
+            'view_count',
+            'like_count',
+            'owner',
+            # "has_liked"
+        )
+
+    def get_author(self, obj):
+        return obj.author.username
+
+    def get_owner(self, obj):
+        request = self.context['request']
+        if request.user.is_authenticated:
+            if obj.author == request.user:
+                return True
+            return False
+
+    # def get_has_liked(self, obj):
+    #     request = self.context['request']
+    #     if request.user.is_authenticated:
+    #         if Blog.objects.filter(Q(like__user=request.user) & Q(like__post=obj)).exists():
+    #             return True
+    #         return False
