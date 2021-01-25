@@ -20,7 +20,7 @@ class BlogList(generics.ListAPIView):
     permission_classes = [AllowAny]
     pagination_class = BlogPageNumberPagination
     serializer_class = BlogListSerializer
-    queryset = Blog.objects.filter(status="d")   ############################### d or p 
+    queryset = Blog.objects.filter(status="p")
 
 
 class BlogCreateApi(generics.CreateAPIView):
