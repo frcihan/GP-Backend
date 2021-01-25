@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'gp_user_app.apps.GpUserAppConfig',
     
     'rest_framework',
+    'rest_framework.authtoken',
     
     # swagger
     # 'django.contrib.staticfiles',  # required for serving swagger ui's css/js files
