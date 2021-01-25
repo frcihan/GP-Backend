@@ -1,7 +1,7 @@
 from django.db.models import fields
 from django.http import request
 from rest_framework import serializers
-# from users.models import Profile
+from gp_user_app.models import Profile
 from .models import Blog, Comment, Like, Category
 from django.db.models import Q
 
@@ -29,15 +29,15 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 class BlogListSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
-    detail_url = serializers.HyperlinkedIdentityField(
-        view_name='detail',
-        lookup_field='slug'
-    )
+    # detail_url = serializers.HyperlinkedIdentityField(
+    #     view_name='detail',
+    #     lookup_field='slug'
+    # )
 
     class Meta:
         model = Blog
         fields = (
-            'detail_url',
+            # 'detail_url',
             'title',
             'content',
             'image',
