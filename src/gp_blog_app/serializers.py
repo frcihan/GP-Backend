@@ -1,23 +1,46 @@
 from django.db.models import fields
 from django.http import request
 from rest_framework import serializers
+# from users.models import Profile
 from .models import Blog, Comment, Like, Category
 from django.db.models import Q
 
+class CommentSerializer(serializers.ModelSerializer):
+    # status = serializers.ChoiceField(choices=Blog.options)
+    user = serializers.StringRelatedField()
+    blog = serializers.StringRelatedField()
+
+    class Meta:
+        model = Comment
+        fields = (
+            'id',
+            'user',
+            'blog',
+            'time_stamp',
+            'content',
+        )
+
+
+class CommentCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ("content",)
+
+
 class BlogListSerializer(serializers.ModelSerializer):
     author = serializers.SerializerMethodField()
-    # detail_url = serializers.HyperlinkedIdentityField(
-    #     view_name='detail',
-    #     lookup_field='slug'
-    # )
+    detail_url = serializers.HyperlinkedIdentityField(
+        view_name='detail',
+        lookup_field='slug'
+    )
 
     class Meta:
         model = Blog
         fields = (
-            # 'detail_url',
+            'detail_url',
             'title',
             'content',
-            # 'image',
+            'image',
             'status',
             'publish_date',
             'author',
@@ -39,7 +62,7 @@ class BlogCreateUpdateSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'content',
-            # 'image',
+            'image',
             'status',
             'owner',
             'category',
@@ -55,8 +78,8 @@ class BlogCreateUpdateSerializer(serializers.ModelSerializer):
 class BlogDetailSerializer(serializers.ModelSerializer):
     status = serializers.ChoiceField(choices=Blog.OPTIONS)
     author = serializers.SerializerMethodField()
-    # has_liked = serializers.SerializerMethodField()
-    # comments = CommentSeializer(many=True)
+    has_liked = serializers.SerializerMethodField()
+    comments = CommentSerializer(many=True)
     # like = LikeSerializer(many=True)
     owner = serializers.SerializerMethodField(read_only=True)
     # update_url = serializers.HyperlinkedIdentityField(
@@ -86,7 +109,7 @@ class BlogDetailSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'content',
-            # 'image',
+            'image',
             'status',
             'publish_date',
             'last_updated',
@@ -98,7 +121,7 @@ class BlogDetailSerializer(serializers.ModelSerializer):
             'view_count',
             'like_count',
             'owner',
-            # "has_liked"
+            'has_liked'
         )
 
     def get_author(self, obj):
@@ -111,9 +134,11 @@ class BlogDetailSerializer(serializers.ModelSerializer):
                 return True
             return False
 
-    # def get_has_liked(self, obj):
-    #     request = self.context['request']
-    #     if request.user.is_authenticated:
-    #         if Blog.objects.filter(Q(like__user=request.user) & Q(like__post=obj)).exists():
-    #             return True
-    #         return False
+    def get_has_liked(self, obj):
+        request = self.context['request']
+        if request.user.is_authenticated:
+            if Blog.objects.filter(Q(like__user=request.user) & Q(like__blog=obj)).exists():
+                return True
+            return False
+
+
